@@ -4,9 +4,11 @@ metadata:
   name: postgres
   namespace: postgres
 spec:
+  type: NodePort
   selector:
     app: postgres
   ports:
     - port: 5432
       targetPort: 5432
-  type: ClusterIP
+      protocol: TCP
+      nodePort: 30432
