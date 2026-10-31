@@ -10,4 +10,4 @@ resources:
 images:
   - name: car-rental-api
     newName: ghcr.io/rsatan32/uni-cardealerapi
-    newTag: replace-with-commit-sha
+    newTag: 3c1803bd8a3505cbb0fd4b923c56804d6b719e0e
