@@ -1,0 +1,73 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: car-rental-migrate
+  namespace: car-rental
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 300
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 185
+        runAsGroup: 185
+        fsGroup: 185
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: migration
+          image: ghcr.io/rsatan32/uni-cardealerapi:replace-with-commit-sha
+          command: [java]
+          args:
+            - -XX:MaxRAMPercentage=60
+            - -Djava.util.logging.manager=org.jboss.logmanager.LogManager
+            - -jar
+            - /deployments/quarkus-run.jar
+            - --migrate
+          envFrom:
+            - configMapRef:
+                name: car-rental-config
+            - secretRef:
+                name: car-rental-bootstrap
+                optional: true
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: car-rental-migration-db
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: car-rental-migration-db
+                  key: password
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: '1'
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          volumeMounts:
+            - name: jwt
+              mountPath: /run/secrets/jwt
+              readOnly: true
+            - name: temporary
+              mountPath: /tmp
+      volumes:
+        - name: jwt
+          secret:
+            secretName: car-rental-jwt
+            defaultMode: 288
+        - name: temporary
+          emptyDir:
+            sizeLimit: 64Mi

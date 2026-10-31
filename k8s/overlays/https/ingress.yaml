@@ -1,0 +1,56 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: car-rental-api
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: 'true'
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts: [api.example.dev]
+      secretName: car-rental-api-tls
+  rules:
+    - host: api.example.dev
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: car-rental-api
+                port:
+                  name: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: car-rental-auth
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: 'true'
+    traefik.ingress.kubernetes.io/router.middlewares: car-rental-auth-rate-limit@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts: [api.example.dev]
+      secretName: car-rental-api-tls
+  rules:
+    - host: api.example.dev
+      http:
+        paths:
+          - path: /api/auth/login
+            pathType: Prefix
+            backend:
+              service:
+                name: car-rental-api
+                port:
+                  name: http
+          - path: /api/auth/register
+            pathType: Prefix
+            backend:
+              service:
+                name: car-rental-api
+                port:
+                  name: http

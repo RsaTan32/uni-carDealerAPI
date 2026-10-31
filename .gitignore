@@ -38,6 +38,14 @@ nb-configuration.xml
 
 # Local environment
 .env
+.env.*
+!.env.example
+/.secrets/
+/config/application*.properties
+/.mvn/wrapper/settings.xml
+*.dump
+*.backup
+*-secret.local.yaml
 
 # Plugin directory
 /.quarkus/cli/plugins/
