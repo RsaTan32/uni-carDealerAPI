@@ -70,7 +70,7 @@ jobs:
               id: image
               shell: bash
               run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
-            - uses: docker/setup-buildx-action@v3
+            - uses: docker/setup-buildx-action@v4
             - name: Build release image
               uses: docker/build-push-action@v6
               with:
