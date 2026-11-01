@@ -9,10 +9,10 @@ metadata:
 spec:
   ingressClassName: traefik
   tls:
-    - hosts: [api.example.dev]
+    - hosts: [api.pistidevops.dev]
       secretName: car-rental-api-tls
   rules:
-    - host: api.example.dev
+    - host: api.pistidevops.dev
       http:
         paths:
           - path: /api
@@ -34,10 +34,10 @@ metadata:
 spec:
   ingressClassName: traefik
   tls:
-    - hosts: [api.example.dev]
+    - hosts: [api.pistidevops.dev]
       secretName: car-rental-api-tls
   rules:
-    - host: api.example.dev
+    - host: api.pistidevops.dev
       http:
         paths:
           - path: /api/auth/login
