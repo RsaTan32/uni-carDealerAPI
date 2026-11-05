@@ -143,6 +143,18 @@ class AuthenticationResourceTest {
         given().get("/q/health/ready").then().statusCode(200).body("status", is("UP"));
     }
 
+        @Test
+        void openApiAndSwaggerUiAreAvailableAndDescribeJwtSecurity() throws Exception {
+                String specification = given().accept(ContentType.JSON).get("/q/openapi")
+                                .then().statusCode(200).extract().asString();
+                var openApi = new com.fasterxml.jackson.databind.ObjectMapper().readTree(specification);
+                assertEquals("http", openApi.at("/components/securitySchemes/bearerAuth/type").asText(), specification);
+                assertEquals("bearer", openApi.at("/components/securitySchemes/bearerAuth/scheme").asText());
+                assertTrue(openApi.at("/paths/~1api~1users/get/security").isArray());
+                assertFalse(openApi.at("/paths/~1api~1cars/get/security").isArray());
+                given().get("/q/swagger-ui/").then().statusCode(200).contentType(containsString("text/html"));
+        }
+
     @Test
     void registrationAlwaysCreatesCustomerAndHashesPassword() {
         Map<String, Object> request = registration("New@Example.com");

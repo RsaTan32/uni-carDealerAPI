@@ -7,6 +7,7 @@ import dev.pisti.dto.ReservationRequest;
 import dev.pisti.dto.ReservationStatusRequest;
 import dev.pisti.dto.ApiViews.ReservationView;
 import dev.pisti.service.ReservationService;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -28,6 +29,7 @@ import jakarta.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed({ "CUSTOMER", "EMPLOYEE", "ADMIN" })
+@SecurityRequirement(name = "bearerAuth")
 public class ReservationResource {
 
     @Inject

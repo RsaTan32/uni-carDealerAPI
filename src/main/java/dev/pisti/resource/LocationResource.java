@@ -6,6 +6,7 @@ import java.util.List;
 import dev.pisti.dto.LocationRequest;
 import dev.pisti.entity.Location;
 import dev.pisti.repository.LocationRepository;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -55,6 +56,7 @@ public class LocationResource {
 
     @POST
     @Transactional
+    @SecurityRequirement(name = "bearerAuth")
     public Response create(@NotNull @Valid LocationRequest request) {
         Location location = new Location();
         location.name = request.name().trim();
@@ -68,6 +70,7 @@ public class LocationResource {
     @PUT
     @Path("/{id}")
     @Transactional
+    @SecurityRequirement(name = "bearerAuth")
     public Response update(@PathParam("id") @Positive Long id, @NotNull @Valid LocationRequest request) {
 
         Location location = locationRepository.findById(id);
@@ -86,6 +89,7 @@ public class LocationResource {
     @DELETE
     @Path("/{id}")
     @Transactional
+    @SecurityRequirement(name = "bearerAuth")
     public Response delete(@PathParam("id") @Positive Long id) {
 
         boolean deleted = locationRepository.deleteById(id);

@@ -5,6 +5,7 @@ import dev.pisti.dto.ApiViews.CarView;
 import dev.pisti.entity.Brand;
 import dev.pisti.entity.Car;
 import dev.pisti.repository.CarRepository;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -67,6 +68,7 @@ public class CarResource {
 
     @POST
     @Transactional
+    @SecurityRequirement(name = "bearerAuth")
     public Response create(@NotNull @Valid CarRequest request) {
 
         validateProductionYear(request.productionYear);
@@ -108,6 +110,7 @@ public class CarResource {
     @PUT
     @Path("/{id}")
     @Transactional
+    @SecurityRequirement(name = "bearerAuth")
     public Response update(@PathParam("id") @Positive Long id, @NotNull @Valid CarRequest request) {
 
         validateProductionYear(request.productionYear);
@@ -159,6 +162,7 @@ public class CarResource {
     @DELETE
     @Path("/{id}")
     @Transactional
+    @SecurityRequirement(name = "bearerAuth")
     public Response delete(@PathParam("id") @Positive Long id) {
 
         boolean deleted = carRepository.deleteById(id);

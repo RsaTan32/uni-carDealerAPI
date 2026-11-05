@@ -6,6 +6,7 @@ import java.util.List;
 import dev.pisti.dto.BrandRequest;
 import dev.pisti.entity.Brand;
 import dev.pisti.repository.BrandRepository;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -54,6 +55,7 @@ public class BrandResource {
 
     @POST
     @Transactional
+    @SecurityRequirement(name = "bearerAuth")
     public Response create(@NotNull @Valid BrandRequest request) {
         Brand brand = new Brand();
         brand.name = request.name().trim();
@@ -65,6 +67,7 @@ public class BrandResource {
     @PUT
     @Path("/{id}")
     @Transactional
+    @SecurityRequirement(name = "bearerAuth")
     public Response update(@PathParam("id") @Positive Long id, @NotNull @Valid BrandRequest request) {
 
         Brand brand = brandRepository.findById(id);
@@ -83,6 +86,7 @@ public class BrandResource {
     @DELETE
     @Path("/{id}")
     @Transactional
+    @SecurityRequirement(name = "bearerAuth")
     public Response delete(@PathParam("id") @Positive Long id) {
 
         boolean deleted = brandRepository.deleteById(id);

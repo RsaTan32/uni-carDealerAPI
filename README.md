@@ -56,6 +56,8 @@ docker start carrental-postgres
 
 The API is available at `http://localhost:8080/api`.
 Restart dev mode after adding the authentication dependencies.
+In dev mode, Swagger UI is available at `http://localhost:8080/q/swagger-ui/`
+and the OpenAPI document at `http://localhost:8080/q/openapi`.
 
 Flyway applies V0 (initial rental tables), V1 (accounts), and V2 (overlap protection)
 to empty databases. A restored existing schema is baselined at version 0, skipping
@@ -364,6 +366,14 @@ serving pods. Never use Flyway clean on a database containing real data.
 Before public deployment, also configure HTTPS, login/registration rate limiting,
 and private/restricted PostgreSQL access. The current authentication implementation
 does not provide email verification, password recovery, or login throttling.
+
+In production, the OpenAPI document and Swagger UI are available at
+`https://<api-host>/q/openapi` and `https://<api-host>/q/swagger-ui/` when the
+HTTPS Ingress overlay is enabled. Swagger UI includes the Bearer JWT authorization
+scheme; log in at `/api/auth/login`, copy `accessToken`, choose **Authorize**, and
+enter the token. Do not paste credentials or tokens into public issue trackers.
+The `/q` route is intentionally limited to the OpenAPI document and Swagger UI;
+Kubernetes health endpoints are not exposed by the Ingress.
 
 Build with `.\mvnw.cmd package`, then run
 `java -jar target/quarkus-app/quarkus-run.jar` with production keys configured.

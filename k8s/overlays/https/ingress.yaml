@@ -15,6 +15,20 @@ spec:
     - host: api.pistidevops.dev
       http:
         paths:
+          - path: /q/openapi
+            pathType: Prefix
+            backend:
+              service:
+                name: car-rental-api
+                port:
+                  name: http
+          - path: /q/swagger-ui
+            pathType: Prefix
+            backend:
+              service:
+                name: car-rental-api
+                port:
+                  name: http
           - path: /api
             pathType: Prefix
             backend:

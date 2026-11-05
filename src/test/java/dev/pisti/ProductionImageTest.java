@@ -66,6 +66,8 @@ class ProductionImageTest {
                 String base = "http://" + api.getHost() + ":" + api.getMappedPort(8080);
                 HttpClient client = HttpClient.newHttpClient();
                 assertEquals(200, get(client, base + "/api/cars", null).statusCode());
+                assertEquals(200, get(client, base + "/q/openapi", null).statusCode());
+                assertEquals(200, get(client, base + "/q/swagger-ui/", null).statusCode());
                 assertEquals(401, get(client, base + "/api/auth/me", null).statusCode());
                 assertEquals(201, post(client, base + "/api/auth/register", """
                         {"email":"release@example.com","password":"release-test-password",

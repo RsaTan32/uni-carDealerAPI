@@ -10,6 +10,7 @@ import dev.pisti.entity.User;
 import dev.pisti.repository.UserRepository;
 import dev.pisti.service.AuthService;
 import dev.pisti.service.CurrentUser;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -30,6 +31,7 @@ import jakarta.ws.rs.core.Response;
 
 @Path("/api/users")
 @RolesAllowed("ADMIN")
+@SecurityRequirement(name = "bearerAuth")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {

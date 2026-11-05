@@ -8,6 +8,7 @@ import dev.pisti.dto.CustomerRequest;
 import dev.pisti.entity.Customer;
 import dev.pisti.repository.CustomerRepository;
 import dev.pisti.service.CurrentUser;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -30,6 +31,7 @@ import jakarta.ws.rs.PUT;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed({ "EMPLOYEE", "ADMIN" })
+@SecurityRequirement(name = "bearerAuth")
 public class CustomerResource {
 
     @Inject

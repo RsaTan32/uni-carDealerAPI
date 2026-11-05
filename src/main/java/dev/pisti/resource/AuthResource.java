@@ -7,6 +7,7 @@ import dev.pisti.dto.ApiViews.UserView;
 import dev.pisti.dto.AuthRequests;
 import dev.pisti.service.AuthService;
 import dev.pisti.service.CurrentUser;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -49,6 +50,7 @@ public class AuthResource {
     @GET
     @Path("/me")
     @RolesAllowed({ "CUSTOMER", "EMPLOYEE", "ADMIN" })
+    @SecurityRequirement(name = "bearerAuth")
     public UserView me() {
         return UserView.from(currentUser.account());
     }
